@@ -117,7 +117,7 @@ public class CSchedule implements Serializable{
 			double x = difference / 60000.0;
 			System.out.println("IsTimeDifferenceValid :time difference : " + x + " mins");
 			if( x >= 10 ) {
-				System.out.println("IsTimeDifferenceValid :Yes time difference is valid. Checked");
+				System.out.println("Time difference is valid. Checked");
 				return true;
 			}
 		}
