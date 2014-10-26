@@ -43,7 +43,6 @@ public class CSchedule implements Serializable{
 
 	private void CreateTempSchedule() {
 		
-		// I will pass string for date
 		CTime startTime = new CTime(2013,2,22,13,10,56);
 		CTime endTime = new CTime(2013,2,22,13,24,56);
 		String description = " Project Analysis";
@@ -92,13 +91,19 @@ public class CSchedule implements Serializable{
 	
 
 	public void addSchedule(CMeeting newMeeting) {
-		// add only when time difference b/w schedule is >=10 min
-		if(IsTimeDifferenceValid(newMeeting.getstartCTime(), newMeeting.getendCTime())) {
-			if(IsNoOverlap(newMeeting.getstartCTime(), newMeeting.getendCTime()) == true) {
-				meetings.add(newMeeting);	
-			}
-			else {
-				System.out.println(" Meeting is overlapped: " + newMeeting.getDescription());
+		if(IsTimeValid(newMeeting.getstartCTime(), newMeeting.getendCTime())){
+			
+			// add only when time difference b/w schedule is =<1
+			if(IsTimeDifferenceValid(newMeeting.getstartCTime(), newMeeting.getendCTime())) {
+				if(IsNoOverlap(newMeeting.getstartCTime(), newMeeting.getendCTime()) == true) {
+					meetings.add(newMeeting);	
+				}
+				else {
+					System.out.println(" Meeting is overlapped: " + newMeeting.getDescription());
+				}
+			}else {
+				
+				System.out.println(" Start time should be eariler than end time : " + newMeeting.getDescription());
 			}
 		}
 		else{
@@ -110,13 +115,19 @@ public class CSchedule implements Serializable{
 	}
 	
 	
+	public boolean IsTimeValid(CTime start, CTime end) {
+		
+		if(start.compare(end) >= 0) {
+			return false;
+		}else return true;
+	}
 	
 	public boolean IsTimeDifferenceValid(CTime start, CTime end) {
 		if(start.compare(end) < 0) {
 			long difference = end.calendar.getTimeInMillis() - start.calendar.getTimeInMillis();
 			double x = difference / 60000.0;
 			System.out.println("IsTimeDifferenceValid :time difference : " + x + " mins");
-			if( x >= 10 ) {
+			if( x <=60  ) {
 				System.out.println("Time difference is valid. Checked");
 				return true;
 			}
