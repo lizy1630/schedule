@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.NoSuchElementException;
 
+
 public class CSchedule implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
@@ -188,9 +189,14 @@ public class CSchedule implements Serializable{
         
         // write schedules
         try{
-            for (CMeeting r : meetings){
-                output_schedule.writeObject(r);
-            }
+        	
+        		output_schedule.writeObject(meetings);
+        		output_schedule.flush();
+//            for (CMeeting r : meetings){
+//                output_schedule.writeObject(r);
+//                output_schedule.flush();
+//            }
+            
         }
         catch(IOException ioException){
             System.out.println("Error writing to file : while write operation into file");
@@ -200,13 +206,15 @@ public class CSchedule implements Serializable{
             System.out.println(e.getMessage());
         }
         // close file
-        try{
-            if (output_schedule != null)
-                output_schedule.close();
-        }
-        catch(IOException ex){
-            System. out .println("Error closing file");
-            System. exit (1);
+        finally {
+	        try{
+	            if (output_schedule != null)
+	                output_schedule.close();
+	        }
+	        catch(IOException ex){
+	            System. out .println("Error closing file");
+	            System. exit (1);
+	        }
         }
     }
     public void ReadSchedules(){
@@ -218,21 +226,25 @@ public class CSchedule implements Serializable{
             System. out .println("Error opening file");
         };
         try{
-            while (true){
-                meetings.add((CMeeting)input_schedules.readObject());
-            }
+        	meetings = (ArrayList<CMeeting>)  input_schedules.readObject();
+//           for(CMeeting cm = (CMeeting)input_schedules.readObject();cm!=null; cm = (CMeeting)input_schedules.readObject()){
+//        	   meetings.add(cm);
+//           }
         }
         catch(Exception ex){
+        	ex.printStackTrace();
             System. out .println("Error reading from file");
         }
         //close file
-        try{
-            if (input_schedules != null)
-                input_schedules.close();
-        }
-        catch(IOException ex){
-            System. out .println("Error closing file");
-            System. exit (1);
+        finally {
+	        try{
+	            if (input_schedules != null)
+	                input_schedules.close();
+	        }
+	        catch(IOException ex){
+	            System. out .println("Error closing file");
+	            System. exit (1);
+	        }
         }
     }
     public String[] getAllSchedules(){
