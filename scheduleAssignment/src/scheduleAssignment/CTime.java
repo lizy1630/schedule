@@ -9,7 +9,16 @@ public class CTime implements Serializable{
 	Calendar calendar;
 	// format : Year Month Day Hour Minute Second  
 	public CTime(int yy, int M, int dd, int hh, int mm, int ss) {
-		this.calendar = new GregorianCalendar(yy,M,dd,hh,mm,ss);
+		try{
+			if((M<0||M>11)||(dd<0||dd>31)||(0<hh||hh>23)||(0<ss||ss>59)){
+				throw new MyExceptions("Time digit is not valid!");
+			}
+			this.calendar = new GregorianCalendar(yy,M,dd,hh,mm,ss);
+		}catch(MyExceptions e){
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	public String getTime() {
@@ -51,15 +60,15 @@ public class CTime implements Serializable{
 	public int compare(CTime anotherCalendar) {
 		int output = this.calendar.compareTo(anotherCalendar.calendar);
 		if (output == 0) {
-			//System.out.println("Comparing start and end time :SAME");
+			System.out.println("Comparing start and end time :SAME");
 		}
 		else { 
 			if(output < 0) {
-				//System.out.println("Comparing start and end time :Another Calendar is after");
+				System.out.println("Comparing start and end time :Another Calendar is after");
 			}
 			else { 
 				if(output > 0) {
-					//System.out.println("Comparing start and end time :Another Calendar is earlier");
+					System.out.println("Comparing start and end time :Another Calendar is earlier");
 				}
 			}
 		}	
@@ -67,15 +76,15 @@ public class CTime implements Serializable{
 	}
 
 //	// the work that I will implement in this will work every where
-//	public static void main(String[] args) {
-//		CTime a = new CTime(2013,0,28,13,24,56);
-//		CTime b = new CTime(2013,0,28,13,24,55);
-//		a.getTimeVerbose();
-//		a.getTime();
-//		a.compare(b);
-//		a.setTime(2014,8,16,13,24,55);
-//		a.getTime();
-//	}
+	public static void main(String[] args) {
+		CTime a = new CTime(2013,15,28,13,24,56);
+		CTime b = new CTime(2013,0,28,13,24,55);
+		a.getTimeVerbose();
+		a.getTime();
+		a.compare(b);
+		a.setTime(2014,8,16,13,24,55);
+		a.getTime();
+	}
 
 }
 
