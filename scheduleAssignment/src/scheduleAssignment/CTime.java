@@ -8,18 +8,29 @@ public class CTime implements Serializable{
 	private static final long serialVersionUID = 1L;
 	Calendar calendar;
 	// format : Year Month Day Hour Minute Second  
+	public CTime() {
+	
+}
 	public CTime(int yy, int M, int dd, int hh, int mm, int ss) {
-		try{
-			if((M<0||M>11)||(dd<0||dd>31)||(0<hh||hh>23)||(0<ss||ss>59)){
-				throw new MyExceptions("Time digit is not valid!");
-			}
-			this.calendar = new GregorianCalendar(yy,M,dd,hh,mm,ss);
-		}catch(MyExceptions e){
-			e.printStackTrace();
-		}
 		
+			this.calendar = new GregorianCalendar(yy,M,dd,hh,mm,ss);
 		
 	}
+	public boolean setCTime(int yy, int M, int dd, int hh, int mm, int ss){
+		if(isValidTime( yy,  M,  dd,  hh,  mm,  ss)) {
+			this.calendar = new GregorianCalendar(yy,M,dd,hh,mm,ss);
+			return true;
+		}
+			
+		else return false;
+	}
+	
+	public boolean isValidTime(int yy, int M, int dd, int hh, int mm, int ss){
+			if((M<0||M>11)||(dd<0||dd>31)||(hh<0||hh>23)||(ss<0||ss>59)){
+				return false;
+			}else return true;
+	}
+	
 	
 	public String getTime() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
@@ -75,6 +86,23 @@ public class CTime implements Serializable{
 		return output;
 	}
 
+	public boolean checkStartEnd(int sthh, int stmm, int endhh, int endmm)
+	{
+		CTime strt = new CTime(14,10,26, sthh, stmm,00);
+		CTime endt = new CTime(14,10,26, endhh, endmm,00);
+		CSchedule sch = new CSchedule();
+		if(sch.IsTimeValid(strt, endt))
+		{
+			if(sch.IsTimeDifferenceValid(strt, endt))
+			{
+				return true;
+			}else return false;
+			
+		}else return false;
+	
+	}
+	
+	
 //	// the work that I will implement in this will work every where
 	public static void main(String[] args) {
 		CTime a = new CTime(2013,15,28,13,24,56);

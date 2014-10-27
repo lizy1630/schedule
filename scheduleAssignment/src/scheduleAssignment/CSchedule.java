@@ -58,8 +58,8 @@ public class CSchedule implements Serializable{
 		CMeeting meeting1 = new CMeeting(startTime1, endTime1, description1, location1);
 		addSchedule(meeting1);
 		
-		CTime startTime2 = new CTime(2014,5,22,10,32,56);
-		CTime endTime2 = new CTime(2014,5,22,11,20,56);
+		CTime startTime2 = new CTime(2014,5,22,11,32,56);
+		CTime endTime2 = new CTime(2014,5,22,11,50,56);
 		String description2 = "Fight with Undertaker";
 		CLocation location2 = new CLocation("America","Detroit","42 W Warren Ave");
 		CMeeting meeting2 = new CMeeting(startTime2, endTime2, description2, location2);
@@ -217,6 +217,38 @@ public class CSchedule implements Serializable{
 	        }
         }
     }
+    
+    
+    public int readScheduleSize(){
+    	 ObjectInputStream input_schedules=null;
+         try{
+             input_schedules = new ObjectInputStream(new FileInputStream( schedule_filename ));
+         }
+         catch(IOException ex){
+             System. out .println("Error opening file");
+         };
+         try{
+         	meetings = (ArrayList<CMeeting>)  input_schedules.readObject();
+         	return meetings.size();
+         }
+         catch(Exception ex){
+         	ex.printStackTrace();
+             System. out .println("Error reading from file");
+             return 0;
+         }
+         //close file
+         finally {
+ 	        try{
+ 	            if (input_schedules != null)
+ 	                input_schedules.close();
+ 	        }
+ 	        catch(IOException ex){
+ 	            System. out .println("Error closing file");
+ 	            System. exit (1);
+ 	        }
+         }
+    }
+    
     public void ReadSchedules(){
         ObjectInputStream input_schedules=null;
         try{
